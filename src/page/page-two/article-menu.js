@@ -1,58 +1,64 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import Dimensions  from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
-export const Typeone = () =>{
+const ArticleMenu = ({navigation}) =>{
     return (
         <Container style={styles.container}>
             <View  style={styles.body}>   
                 
                 <View style={styles.header}>
                     <TouchableOpacity>
-                    <Card>
+                        <Card>
                         <CardItem header style={{backgroundColor:'#e85f5f'}}>
-                            <Text style={{fontSize:25, color:'white', fontWeight:'bold'}}>Sorgular : Tip 1</Text>
+                            <Text style={{fontSize:25, color:'white', fontWeight:'bold'}}>Sorgular : Tip 2</Text>
                         </CardItem>
-                    </Card>                    
+                    </Card>
                     </TouchableOpacity>
                 </View>
                 
                 <ScrollView style={styles.scrollView}>
-                    
+                    <TouchableOpacity onPress={() => navigation.navigate("ArticleOne")}>
                     <Card>
                         <CardItem header>
                             <Text style={styles.hText}>1.Madde</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text style={styles.text}>En fazla yolcu taşınan 5 gün ve toplam yolcu sayıları</Text>
+                            <Text style={styles.text}>İki tarih arasında belirli bir lokasyondan hareket eden araç sayısı</Text>
                             </Body>
                         </CardItem>
                     </Card>
-                
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => navigation.navigate("ArticleTwo")}>
                     <Card>
                         <CardItem header>
                         <Text style={styles.hText}>2.Madde</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text style={styles.text}>Belirli mesafenin altında en çok seyahat yapılan gün ve seyahat uzunluğu</Text>
+                            <Text style={styles.text}>Günlük seyahat başına düşen ortalama alınan ücretlere göre; en az ücret alınan iki
+                                tarih arasındaki günlük alınan ortalama ücretler</Text>
                             </Body>
                         </CardItem>
                     </Card>
+                    </TouchableOpacity>
 
+                    <TouchableOpacity onPress={() => navigation.navigate("ArticleThree")}>
                     <Card>
                         <CardItem header>
                         <Text style={styles.hText}>3.Madde</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text style={styles.text}>En uzun mesafeli 5 yolculuktaki gün ve mesafeleri</Text>
+                            <Text style={styles.text}>İki tarih arasında seyahat edilen en az mesafeli 5 yolculuk</Text>
                             </Body>
                         </CardItem>
                     </Card>
+                    </TouchableOpacity>
 
                 </ScrollView>
 
@@ -60,7 +66,7 @@ export const Typeone = () =>{
         </Container>
     );
 };
-
+export default ArticleMenu;
 const styles = new StyleSheet.create({
     container:{
         flex:1,

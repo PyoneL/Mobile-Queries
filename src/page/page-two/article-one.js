@@ -1,0 +1,48 @@
+import React from 'react';
+import { StatusBar } from 'expo-status-bar';
+
+import { View, StyleSheet, ScrollView } from 'react-native';
+import Constants from 'expo-constants';
+import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
+
+const ArticleOne = () => {
+    return (
+      <Container style={styles.container}>
+        <View  style={styles.body}>   
+          <View style={styles.header}>
+            <Card>
+                <CardItem style={{backgroundColor:'#e85f5f'}}>
+                  <Body>
+                    <Text style={{fontSize:20, color:'white', fontWeight:'bold'}}>İki tarih arasında belirli bir lokasyondan hareket eden araç sayısı</Text>
+                  </Body>
+                </CardItem>
+            </Card>             
+          </View>
+          <ScrollView>
+            <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+              <Text>TO DO</Text>
+            </View>
+          </ScrollView>
+        </View>
+        <StatusBar style="light" />
+      </Container>
+    );
+};
+export default ArticleOne;
+
+const styles = new StyleSheet.create({
+  container:{
+      flex:1,
+      flexDirection:'row',
+      justifyContent:'center',
+      backgroundColor:'#deded5'
+  },
+  body:{ 
+      flex:1,
+      padding:10, 
+      paddingBottom:30,
+  },
+  header:{
+      marginBottom:10,
+  },
+});

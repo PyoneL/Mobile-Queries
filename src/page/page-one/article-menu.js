@@ -4,56 +4,56 @@ import Constants from 'expo-constants';
 import Dimensions  from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
-export const Typethree = () =>{
+const ArticleMenu = ({navigation}) =>{
     return (
         <Container style={styles.container}>
             <View  style={styles.body}>   
                 
                 <View style={styles.header}>
-                    <TouchableOpacity>
                     <Card>
                         <CardItem header style={{backgroundColor:'#e85f5f'}}>
-                            <Text style={{fontSize:25, color:'white', fontWeight:'bold'}}>Sorgular : Tip 2</Text>
+                            <Text style={{fontSize:25, color:'white', fontWeight:'bold'}}>Sorgular : Tip 1</Text>
                         </CardItem>
-                    </Card>
-                    </TouchableOpacity>
+                    </Card>             
                 </View>
                 
                 <ScrollView style={styles.scrollView}>
-                    
+                    <TouchableOpacity onPress={() => navigation.navigate("ArticleOne")}>
                     <Card>
                         <CardItem header>
                             <Text style={styles.hText}>1.Madde</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <TextInput placeholder="deneme" />
-                           <Text style={styles.text}>Belirli bir günde en uzun seyahatin harita üstünde yolunun çizilmesi</Text>
+                            <Text style={styles.text}>En fazla yolcu taşınan 5 gün ve toplam yolcu sayıları</Text>
                             </Body>
                         </CardItem>
-                    </Card>
-                
+                    </Card>       
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("ArticleTwo")}>
                     <Card>
                         <CardItem header>
                         <Text style={styles.hText}>2.Madde</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text style={styles.text}>Belirli bir günde aynı konumdan hareket eden araçların rasgele 5’inin yolunun çizilmesi</Text>
+                            <Text style={styles.text}>Belirli mesafenin altında en çok seyahat yapılan gün ve seyahat uzunluğu</Text>
                             </Body>
                         </CardItem>
                     </Card>
-
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate("ArticleThree")}>
                     <Card>
                         <CardItem header>
                         <Text style={styles.hText}>3.Madde</Text>
                         </CardItem>
                         <CardItem>
                             <Body>
-                            <Text style={styles.text}>En az 3 yolcunun bulunduğu seyahatlerden en kısa mesafeli ve en uzun mesafeli yolun çizilmesi</Text>
+                            <Text style={styles.text}>En uzun mesafeli 5 yolculuktaki gün ve mesafeleri</Text>
                             </Body>
                         </CardItem>
                     </Card>
+                    </TouchableOpacity>
 
                 </ScrollView>
 
@@ -61,19 +61,18 @@ export const Typethree = () =>{
         </Container>
     );
 };
-
+export default ArticleMenu;
 const styles = new StyleSheet.create({
     container:{
         flex:1,
         flexDirection:'row',
         justifyContent:'center',
-        alignItems:'center',
         backgroundColor:'#deded5'
     },
     body:{ 
         flex:1,
         top:Constants.statusBarHeight,  
-        padding:10,
+        padding:10, 
         paddingBottom:30,
     },
     header:{
@@ -92,4 +91,3 @@ const styles = new StyleSheet.create({
         color:'#1c1c1b'
     },
 });
-
