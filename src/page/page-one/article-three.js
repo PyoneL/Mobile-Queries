@@ -1,8 +1,23 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView,TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
+import firebase from 'firebase';
+
+const taxiCollection = firebase.firestore().collection('taxi_info');
+
+function getpageone(){
+  const result =  taxiCollection.orderBy('passenger_count','desc')
+  .limit(5)
+  .get()
+  .then(querySnapshot =>{
+    querySnapshot.forEach(documentSnapshot =>{
+      console.log(documentSnapshot.data());
+    });
+    
+  });
+}
 
 const ArticleThree = () => {
     return (
@@ -19,7 +34,9 @@ const ArticleThree = () => {
           </View>
           <ScrollView>
             <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity onPress={() => {getpageone()}}>
               <Text>TO DO</Text>
+              </TouchableOpacity>
             </View>
           </ScrollView>
         </View>
