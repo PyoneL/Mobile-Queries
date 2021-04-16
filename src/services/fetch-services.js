@@ -12,7 +12,19 @@ const getTypeOneArticleOne = () => {
 
 
   const getTypeOneArticleThree = () => {
-    return fetch(apiURL+'ExampleOneQueries/queryTree')
+    return fetch(apiURL+'ExampleOneQueries/queryThree')
+      .then((response) => response.json())
+      .then((json) => {
+        return json;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+
+  const getTypeThreeArticleThree = () => {
+    return fetch(apiURL+'ExampleThreeQueries/queryThree')
       .then((response) => response.json())
       .then((json) => {
         return json;
@@ -25,4 +37,4 @@ const getTypeOneArticleOne = () => {
 
 
 
-export {getTypeOneArticleOne, getTypeOneArticleThree};
+export {getTypeOneArticleOne, getTypeOneArticleThree,getTypeThreeArticleThree};

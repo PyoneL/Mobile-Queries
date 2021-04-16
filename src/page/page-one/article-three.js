@@ -5,7 +5,6 @@ import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-b
 import { getTypeOneArticleThree } from "../../services/fetch-services";
 import { Col, Row, Grid } from "react-native-easy-grid";
 
-
 export default class ArticleThree extends React.Component {
   state = {
     Data: Array,
