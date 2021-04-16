@@ -1,25 +1,58 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, ScrollView,TouchableOpacity } from 'react-native';
-import Constants from 'expo-constants';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
-import firebase from 'firebase';
+import { getTypeOneArticleThree } from "../../services/fetch-services";
+import { Col, Row, Grid } from "react-native-easy-grid";
 
-const taxiCollection = firebase.firestore().collection('taxi_info');
 
-function getpageone(){
-  const result =  taxiCollection.orderBy('passenger_count','desc')
-  .limit(5)
-  .get()
-  .then(querySnapshot =>{
-    querySnapshot.forEach(documentSnapshot =>{
-      console.log(documentSnapshot.data());
-    });
-    
-  });
-}
+export default class ArticleThree extends React.Component {
+  state = {
+    Data: Array,
+    Success: Boolean,
+    Message: String,
+  };
+  constructor(props) {
+    super(props);
+    this.setArticleThree();
+  }
+  setArticleThree = () => {
+    getTypeOneArticleThree()
+      .then((x) => {
+        this.setState({ Data: x.data });
+        this.setState({ Success: x.success });
+        this.setState({ Message: x.message });
+      }).finally(() => {
+        if(this.state.Data !== null){
+          console.log(this.state.Data)
+        }
+      });
+  };
 
-const ArticleThree = () => {
+  getData(){
+    return (<View>
+      {
+        this.state.Data.map((item,key) => (
+          <Card key={key}>
+          <CardItem header>
+            <Text style={{fontSize:18, fontWeight:'bold'}}>{key + 1}. Kayıt</Text>
+          </CardItem>
+          <CardItem>
+            <Body>
+              <Grid>
+                  <Row><Text style={{marginBottom:5, fontSize:16, fontWeight:'bold'}}>En uzun yolculuk yapılan tarih</Text></Row>
+                  <Row><Text style={{marginBottom:5, fontSize:16}}>{item.puDatetime}</Text></Row>
+                  <Row><Text style={{marginBottom:5, fontSize:16, fontWeight:'bold'}}>Toplam mesafe </Text></Row>
+                  <Row><Text style={{marginBottom:5, fontSize:16}}>{item.trip_distance}</Text></Row>
+              </Grid>
+            </Body>
+          </CardItem>
+        </Card>
+           ))
+      }
+    </View>);
+  };
+  render() {
     return (
       <Container style={styles.container}>
         <View  style={styles.body}>   
@@ -33,18 +66,16 @@ const ArticleThree = () => {
             </Card>             
           </View>
           <ScrollView>
-            <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
-            <TouchableOpacity onPress={() => {getpageone()}}>
-              <Text>TO DO</Text>
-              </TouchableOpacity>
+          <View style={{ flex: 1 }}>
+              {this.state.Data !== null && this.state.Success === true && this.getData()}
             </View>
           </ScrollView>
         </View>
         <StatusBar style="light" />
       </Container>
     );
-};
-export default ArticleThree;
+  }
+}
 
 const styles = new StyleSheet.create({
   container:{
