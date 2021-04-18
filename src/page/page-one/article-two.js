@@ -42,11 +42,9 @@ export default class articleTwo extends Component {
       this.setState({ Message: x.message });
     });
   };
-  /*
- {puDatetime: "2020-12-16T16:35:05", trip_distance: 4.99}
-puDatetime: "2020-12-16T16:35:05"
-trip_distance: 4.99
-*/
+  /* Fake Data
+      {puDatetime: "2020-12-16T16:35:05", trip_distance: 4.99}
+  */
 
   getView() {
     let data = this.state.Data.map((value, key) => (
