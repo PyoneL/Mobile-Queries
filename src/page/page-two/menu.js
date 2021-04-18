@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import Dimensions  from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
-const ArticleMenu = ({navigation}) =>{
+const MenuTwo = ({navigation}) =>{
     return (
         <Container style={styles.container}>
             <View  style={styles.body}>   
@@ -20,7 +20,7 @@ const ArticleMenu = ({navigation}) =>{
                 </View>
                 
                 <ScrollView style={styles.scrollView}>
-                    <TouchableOpacity onPress={() => navigation.navigate("ArticleOne")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("QueryTwoOne")}>
                     <Card>
                         <CardItem header>
                             <Text style={styles.hText}>1.Madde</Text>
@@ -33,7 +33,7 @@ const ArticleMenu = ({navigation}) =>{
                     </Card>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("ArticleTwo")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("QueryTwoTwo")}>
                     <Card>
                         <CardItem header>
                         <Text style={styles.hText}>2.Madde</Text>
@@ -47,7 +47,7 @@ const ArticleMenu = ({navigation}) =>{
                     </Card>
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate("ArticleThree")}>
+                    <TouchableOpacity onPress={() => navigation.navigate("QueryTwoThree")}>
                     <Card>
                         <CardItem header>
                         <Text style={styles.hText}>3.Madde</Text>
@@ -66,7 +66,8 @@ const ArticleMenu = ({navigation}) =>{
         </Container>
     );
 };
-export default ArticleMenu;
+export default MenuTwo;
+
 const styles = new StyleSheet.create({
     container:{
         flex:1,

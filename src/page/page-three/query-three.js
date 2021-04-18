@@ -1,11 +1,10 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-
 import { View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
-const ArticleOne = () => {
+const QueryThreeThree = () => {
     return (
       <Container style={styles.container}>
         <View  style={styles.body}>   
@@ -13,7 +12,7 @@ const ArticleOne = () => {
             <Card>
                 <CardItem style={{backgroundColor:'#e85f5f'}}>
                   <Body>
-                    <Text style={{fontSize:20, color:'white', fontWeight:'bold'}}>İki tarih arasında belirli bir lokasyondan hareket eden araç sayısı</Text>
+                    <Text style={{fontSize:20, color:'white', fontWeight:'bold'}}>En az 3 yolcunun bulunduğu seyahatlerden en kısa mesafeli ve en uzun mesafeli yolun çizilmesi</Text>
                   </Body>
                 </CardItem>
             </Card>             
@@ -28,7 +27,7 @@ const ArticleOne = () => {
       </Container>
     );
 };
-export default ArticleOne;
+export default QueryThreeThree;
 
 const styles = new StyleSheet.create({
   container:{

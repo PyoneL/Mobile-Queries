@@ -4,7 +4,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
-const ArticleTwo = () => {
+const QueryThreeTwo = () => {
     return (
       <Container style={styles.container}>
         <View  style={styles.body}>   
@@ -27,7 +27,7 @@ const ArticleTwo = () => {
       </Container>
     );
 };
-export default ArticleTwo;
+export default QueryThreeTwo;
 
 const styles = new StyleSheet.create({
   container:{

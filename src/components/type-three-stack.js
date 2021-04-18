@@ -1,31 +1,31 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import ArticleMenu from '../page/page-three/article-menu';
-import ArticleOne from '../page/page-three/article-one';
-import ArticleTwo from '../page/page-three/article-two';
-import ArticleThree from '../page/page-three/article-three';
+import MenuThree from '../page/page-three/menu';
+import QueryThreeOne from '../page/page-three/query-one';
+import QueryThreeTwo from '../page/page-three/query-two';
+import QueryThreeThree from '../page/page-three/query-three';
 
 const TypeThree = createStackNavigator();
 
 const TypeThreeStack = () =>{
     return(
-        <TypeThree.Navigator initialRouteName="ArticleMenu">
+        <TypeThree.Navigator initialRouteName="MenuThree" >
             <TypeThree.Screen 
                 options={{headerShown:false, title: "Sorgular : Tip 3"}} 
-                name="ArticleMenu" 
-                component={ArticleMenu} />
+                name="MenuThree" 
+                component={MenuThree} />
             <TypeThree.Screen 
                 options={{headerShown:true, title: "Madde 1",headerTintColor:'white', headerStyle:{backgroundColor:'#e85f5f'}}} 
-                name="ArticleOne" 
-                component={ArticleOne} />
+                name="QueryThreeOne" 
+                component={QueryThreeOne} />
             <TypeThree.Screen 
                 options={{headerShown:true, title: "Madde 2",headerTintColor:'white', headerStyle:{backgroundColor:'#e85f5f'}}} 
-                name="ArticleTwo" 
-                component={ArticleTwo} />
+                name="QueryThreeTwo" 
+                component={QueryThreeTwo} />
             <TypeThree.Screen 
                 options={{headerShown:true, title: "Madde 3",headerTintColor:'white', headerStyle:{backgroundColor:'#e85f5f'}}} 
-                name="ArticleThree" 
-                component={ArticleThree} />
+                name="QueryThreeThree" 
+                component={QueryThreeThree} />
         </TypeThree.Navigator>
     );
 };
