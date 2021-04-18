@@ -1,8 +1,8 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { Container, Card, CardItem, Text, Body, Item, Input, Button, Form, DatePicker } from 'native-base';
-import { Adresses, GetData,ParseDate } from "../../services/db-services";
+import { Container, Card, CardItem, Text, Body, Item, Input, Button, Form,Picker } from 'native-base';
+import { Adresses, GetData,ParseDate,GetLocationData } from "../../services/db-services";
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -17,15 +17,25 @@ export default class QueryTwoOne extends React.Component{
         secondDate: new Date(),
         puLocationID: new Number,
       },
-      
+      LocationInfo:{},
+      selectedLocation: '0',
+
       firstDate:new Date(2020, 11 ,1),
       secondDate:new Date(2020, 11, 31),
-      puLocationID:'',
+      puLocationID:0,
 
-      show:false,
+      showDatePicker:false,
       selectedDate:0 // 0 first, 1 second
     }
     this.setDate = this.setDate.bind(this);
+    this.GetLocationInfo()
+  }
+
+  GetLocationInfo = async () =>{
+    let result = await GetLocationData(null, Adresses.Location.GetAll);
+    if(result){
+      this.setState({LocationInfo : result})
+    }  
   }
 
   Query = async () =>{
@@ -36,7 +46,7 @@ export default class QueryTwoOne extends React.Component{
       await this.setState({inputData:{
         firstDate:this.state.firstDate,
         secondDate:this.state.secondDate,
-        puLocationID:Number(this.state.puLocationID),
+        puLocationID:this.state.puLocationID,
       }})
       let result = await GetData(JSON.stringify(this.state.inputData), Adresses.TypeTwo.One);
       if(result){
@@ -45,26 +55,33 @@ export default class QueryTwoOne extends React.Component{
     }
   } 
 
+  async onValueChange(value) {
+    await this.setState({
+      puLocationID: Number(this.state.LocationInfo[value].locationId),
+      selectedLocation: value
+    })
+  }
+
   setDate(e,newDate) {
     const currentDate = newDate || new Date ();
     if(this.state.selectedDate==0)
     {
-      this.setState({ firstDate: currentDate, show: false });
+      this.setState({ firstDate: currentDate, showDatePicker: false });
       if(this.state.secondDate.getDate() < this.state.firstDate.getDate())
         this.setState({ secondDate: currentDate});
     }
     else
-      this.setState({ secondDate: currentDate, show: false }); 
+      this.setState({ secondDate: currentDate, showDatePicker: false }); 
   }
 
   showMode = (props) => {
-    this.setState({ selectedDate:props , show: true });
+    this.setState({ selectedDate:props , showDatePicker: true });
   };
 
   render(){
     return (
       <Container style={styles.container}>
-        <View  style={styles.body}>   
+        <View style={styles.body}>   
         <ScrollView style={{flex:1}}>
           <View style={styles.header}>
             <Card>
@@ -102,14 +119,22 @@ export default class QueryTwoOne extends React.Component{
                       <Text style={{color:'#e85f5f', fontSize:18, fontWeight:'bold'}}>Tarih Seç</Text>
                     </Button>                    
                     
-                    <Text style={{fontSize:20, color:'white', fontWeight:'bold'}}>Mesafe Giriniz :</Text>
+                    <Text style={{fontSize:20, color:'white', fontWeight:'bold', marginBottom:10}}>Lokasyon seçiniz :</Text>
                     <Item full style={{marginBottom:10, marginLeft:0}}>
-                      <Icon color='white'  style={{fontSize:30}} name='road' />
-                      <Input style={{color:'white',fontSize:18, marginLeft:10}} 
-                             keyboardType='number-pad'  
-                             onChangeText={(dist)=>{ this.setState({puLocationID:dist })}} 
-                             placeholderTextColor="white"  
-                             placeholder='Mesafe'/>
+                      <Icon color='white'  style={{fontSize:30}} name='map-marker' />
+                      <Picker style={{height:50, color:'black', marginLeft:10, fontSize:20}}
+                        mode="dropdown"
+                        selectedValue={this.state.selectedLocation}
+                        onValueChange={this.onValueChange.bind(this)}
+                      >
+                      {
+                        Object.keys(this.state.LocationInfo).map((key) => {
+                          return (
+                            <Picker.Item label={this.state.LocationInfo[key].borough+" - "+this.state.LocationInfo[key].zone} value={key} key={key}/>
+                          )
+                        })
+                      }                    
+                      </Picker>
                     </Item>
                     <Button full style={{backgroundColor:'#FFF'}} onPress={() => this.Query()}>
                       <Text style={{color:'#e85f5f', fontSize:18, fontWeight:'bold'}}>Sorgula</Text>
@@ -143,7 +168,7 @@ export default class QueryTwoOne extends React.Component{
             </View>
 
           </ScrollView>
-          { this.state.show && 
+          { this.state.showDatePicker && 
             <DateTimePicker
               defaultDate={this.state.selectedDate==1 ? this.state.firstDate : new Date(2020, 11, 1)}
               minimumDate={this.state.selectedDate==1 ? this.state.firstDate : new Date(2020, 11, 1)}
