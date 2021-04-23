@@ -9,7 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Tabs = createMaterialBottomTabNavigator();
 
-export default class App extends React.Component {
+export default class App extends React .Component {
   constructor(props){
     super(props)
     this.state = {
@@ -28,7 +28,7 @@ export default class App extends React.Component {
 
   render(){
     if (!this.state.isReady) {
-      return (<View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:25}}>Upss!</Text></View>);
+      return (<View style={{flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}></View>);
     }
     else{
       return (

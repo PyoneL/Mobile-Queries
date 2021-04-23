@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Mobile-Queries-Frontend1",
-    "slug": "Mobile-Queries-Frontend1",
+    "name": "Mobile-Queries",
+    "slug": "Mobile-Queries",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
