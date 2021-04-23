@@ -10,12 +10,14 @@ import {
   Button,
   Content,
   Spinner,
+  Root,
 } from "native-base";
 import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import {
   Adresses,
   GetData,
   GOOGLE_MAPS_APIKEY,
+  ShowToast,
 } from "../../services/db-services";
 import MapViewDirections from "react-native-maps-directions";
 
@@ -24,31 +26,25 @@ export default class QueryThreeThree extends React.Component {
     super(props);
     this.mapRef = null;
     this.state = {
-      LocationInfo: {},
+      LocationInfo: null,
       Data: null,
-      inputData: {},
+      inputData: null,
       date: new Date("2020-12-01"),
       showDatePicker: false,
       modalShown: false,
       selectedLocation: "0",
       puLocationID: 0,
       colors: [
-        "aqua",
-        "black",
-        "blue",
-        "fuchsia",
-        "green",
-        "lime",
-        "maroon",
-        "navy",
-        "olive",
-        "orange",
-        "purple",
         "red",
-        "silver",
+        "olive",
+        "fuchsia",
+        "black",
+        "orange",
+        "navy",
+        "maroon",
+        "purple",
+        "green",
         "teal",
-        "white",
-        "yellow",
       ],
     };
   }
@@ -62,22 +58,32 @@ export default class QueryThreeThree extends React.Component {
   }
 
   Query = async () => {
-    this.setState({ loading: true });
+    await this.setState({ loading: true });
     var result = await GetData(this.state.inputData, Adresses.TypeThree.Three);
     if (result) {
-      await this.setState({ Data: result, loading: false });
-      this.showModal(true);
+      if (result.success) {
+        this.setState({
+          Data: result.data,
+          loading: false,
+        });
+        ShowToast(result.success, "success");
+        this.showModal(true);
+      } else {
+        this.setState({ loading: false });
+        ShowToast(result.success, "danger");
+      }
     } else {
       this.setState({ loading: false });
+      ShowToast("Servise Bağlanılamadı!", "danger");
     }
   };
 
   fitToMarkers = () => {
     var temp = [];
-    temp.push(this.state.Data[0]["longest_trip"].puLocationCoordinate)
-    temp.push(this.state.Data[0]["longest_trip"].doLocationCoordinate)
-    temp.push(this.state.Data[0]["shortest_trip"].puLocationCoordinate)
-    temp.push(this.state.Data[0]["shortest_trip"].doLocationCoordinate)
+    temp.push(this.state.Data[0]["longest_trip"].puLocationCoordinate);
+    temp.push(this.state.Data[0]["longest_trip"].doLocationCoordinate);
+    temp.push(this.state.Data[0]["shortest_trip"].puLocationCoordinate);
+    temp.push(this.state.Data[0]["shortest_trip"].doLocationCoordinate);
     this.mapRef.fitToCoordinates(temp, {
       edgePadding: { top: 150, right: 150, bottom: 150, left: 150 },
       animated: true,
@@ -86,6 +92,7 @@ export default class QueryThreeThree extends React.Component {
 
   render() {
     return (
+      <Root>
       <Container style={styles.container}>
         <Content style={styles.body}>
           <View style={styles.header}>
@@ -104,21 +111,21 @@ export default class QueryThreeThree extends React.Component {
             <Card>
               <CardItem style={{ backgroundColor: "#e85f5f" }}>
                 <Body>
-                <Button
-                      full
-                      style={{ backgroundColor: "#FFF" }}
-                      onPress={() => this.Query()}
+                  <Button
+                    full
+                    style={{ backgroundColor: "#FFF" }}
+                    onPress={() => this.Query()}
+                  >
+                    <Text
+                      style={{
+                        color: "#e85f5f",
+                        fontSize: 18,
+                        fontWeight: "bold",
+                      }}
                     >
-                      <Text
-                        style={{
-                          color: "#e85f5f",
-                          fontSize: 18,
-                          fontWeight: "bold",
-                        }}
-                      >
-                        Görüntüle
-                      </Text>
-                    </Button>
+                      Görüntüle
+                    </Text>
+                  </Button>
                 </Body>
               </CardItem>
             </Card>
@@ -143,47 +150,78 @@ export default class QueryThreeThree extends React.Component {
                   onMapReady={() => this.fitToMarkers()}
                 >
                   <View>
-                  <MapViewDirections
-                    origin={this.state.Data[0]["longest_trip"].puLocationCoordinate}
-                    destination={this.state.Data[0]["longest_trip"].doLocationCoordinate}
-                    apikey={GOOGLE_MAPS_APIKEY}
-                    strokeWidth={3}
-                    strokeColor={
-                      this.state.colors[Math.floor(Math.random() * 16)]
-                    }
-                  />
-                  <Marker
-                    pinColor={"blue"}
-                    coordinate={this.state.Data[0]["longest_trip"].puLocationCoordinate}
-                    title={"Başlangıç Komunu"}
-                    description={this.state.Data[0]["longest_trip"].puLocation}
-                  />
-                  <Marker
-                    pinColor={"red"}
-                    coordinate={this.state.Data[0]["longest_trip"].doLocationCoordinate}
-                    title={"Varış Konumu"}
-                    title={this.state.Data[0]["longest_trip"].doLocation}
-                  />
+                    <MapViewDirections
+                      origin={
+                        this.state.Data[0]["longest_trip"].puLocationCoordinate
+                      }
+                      destination={
+                        this.state.Data[0]["longest_trip"].doLocationCoordinate
+                      }
+                      apikey={GOOGLE_MAPS_APIKEY}
+                      strokeWidth={3}
+                      strokeColor={
+                        this.state.colors[
+                          Math.floor(Math.random() * this.state.colors.length)
+                        ]
+                      }
+                    />
+                    <Marker
+                      pinColor={"blue"}
+                      coordinate={
+                        this.state.Data[0]["longest_trip"].puLocationCoordinate
+                      }
+                      title={"Başlangıç Komunu"}
+                      description={
+                        this.state.Data[0]["longest_trip"].puLocation
+                      }
+                    />
+                    <Marker
+                      pinColor={"red"}
+                      coordinate={
+                        this.state.Data[0]["longest_trip"].doLocationCoordinate
+                      }
+                      title={"Varış Konumu"}
+                      description={
+                        this.state.Data[0]["longest_trip"].doLocation
+                      }
+                    />
                   </View>
                   <View>
-                  <MapViewDirections
-                    origin={this.state.Data[0]["shortest_trip"].puLocationCoordinate}
-                    destination={this.state.Data[0]["shortest_trip"].doLocationCoordinate}
-                    apikey={GOOGLE_MAPS_APIKEY}
-                    strokeWidth={3}
-                    strokeColor={
-                      this.state.colors[Math.floor(Math.random() * 16)]
-                    }
-                  />
-                  <Marker
-                    pinColor={"blue"}
-                    coordinate={this.state.Data[0]["shortest_trip"].puLocationCoordinate}
-                    title={this.state.Data[0]["shortest_trip"].puLocation}
-                  />
-                  <Marker
-                    coordinate={this.state.Data[0]["shortest_trip"].doLocationCoordinate}
-                    title={this.state.Data[0]["shortest_trip"].doLocation}
-                  /></View>
+                    <MapViewDirections
+                      origin={
+                        this.state.Data[0]["shortest_trip"].puLocationCoordinate
+                      }
+                      destination={
+                        this.state.Data[0]["shortest_trip"].doLocationCoordinate
+                      }
+                      apikey={GOOGLE_MAPS_APIKEY}
+                      strokeWidth={3}
+                      strokeColor={
+                        this.state.colors[
+                          Math.floor(Math.random() * this.state.colors.length)
+                        ]
+                      }
+                    />
+                    <Marker
+                      pinColor={"blue"}
+                      coordinate={
+                        this.state.Data[0]["shortest_trip"].puLocationCoordinate
+                      }
+                      title={"Başlangıç Konumu"}
+                      description={
+                        this.state.Data[0]["shortest_trip"].puLocation
+                      }
+                    />
+                    <Marker
+                      coordinate={
+                        this.state.Data[0]["shortest_trip"].doLocationCoordinate
+                      }
+                      title={"Varış Konumu"}
+                      description={
+                        this.state.Data[0]["shortest_trip"].doLocation
+                      }
+                    />
+                  </View>
                 </MapView>
               </Modal>
             )}
@@ -208,6 +246,7 @@ export default class QueryThreeThree extends React.Component {
         )}
         <StatusBar style="light" />
       </Container>
+      </Root>
     );
   }
 }

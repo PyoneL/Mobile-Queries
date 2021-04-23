@@ -9,9 +9,10 @@ import {
   Body,
   Spinner,
   Content,
+  Root,
 } from "native-base";
 import { Row, Grid } from "react-native-easy-grid";
-import { Adresses, GetData, ParseDate } from "../../services/db-services";
+import { Adresses, GetData, ParseDate, ShowToast } from "../../services/db-services";
 
 export default class QueryTwoTwo extends React.Component {
   constructor(props) {
@@ -30,14 +31,26 @@ export default class QueryTwoTwo extends React.Component {
     await this.setState({ loading: true });
     var result = await GetData(null, Adresses.TypeTwo.Two);
     if (result) {
-      this.setState({ Data: result, loading: false });
+      if (result.success) {
+        this.setState({
+          Data: result.data,
+          loading: false,
+        });
+        this.setState({ loading: false });
+        ShowToast(result.message,'success');
+      } else {
+        this.setState({ loading: false });
+        ShowToast(result.message,'danger');
+      }
     } else {
       this.setState({ loading: false });
+      ShowToast("Servise Bağlanılamadı.",'danger');
     }
   };
 
   render() {
     return (
+      <Root>
       <Container style={styles.container}>
         <Content style={styles.body}>
           <ScrollView style={styles.scrollView}>
@@ -133,6 +146,7 @@ export default class QueryTwoTwo extends React.Component {
         )}
         <StatusBar style="light" />
       </Container>
+      </Root>
     );
   }
 }

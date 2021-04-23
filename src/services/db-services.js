@@ -1,3 +1,5 @@
+import { Toast } from "native-base";
+
 const ApiUrl = "https://yazlab22.somee.com";
 const Adresses = {
   TypeOne: {
@@ -20,6 +22,38 @@ const Adresses = {
   },
 };
 const GOOGLE_MAPS_APIKEY = "AIzaSyCOA7g0o-KcAnxg7C_d74h8quV_Ffsc4Ng";
+const toastStyle = {
+  danger:{
+    toast:{
+      backgroundColor:'red', 
+    },
+    text:{
+      color:'white',
+      fontSize:18,
+      fontWeight:'bold', 
+    }
+  },
+  success:{
+    toast:{
+      backgroundColor:'green',
+    },
+    text:{
+      color:'white',
+      fontSize:18,
+      fontWeight:'bold',
+    }
+  },
+  warning:{
+    toast:{
+      backgroundColor:'orange',
+    },
+    text:{
+      color:'black',
+      fontSize:18,
+      fontWeight:'bold',
+    }
+  }
+}
 
 const GetData = async (data, adress) => {
   return fetch(ApiUrl + adress, {
@@ -30,7 +64,7 @@ const GetData = async (data, adress) => {
   })
     .then((response) => response.json())
     .then((json) => {
-      return json.data;
+      return json;
     })
     .catch((error) => console.error(error));
 };
@@ -58,4 +92,14 @@ function ParseDate(date, withTime = false) {
     );
   return day.substr(-2) + "-" + mount.substr(-2) + "-" + year;
 }
-export { Adresses, GetData, GOOGLE_MAPS_APIKEY, ParseDate };
+
+function ShowToast(message, status='success'){
+  Toast.show({
+    text: message,
+    duration: status=='success' ? 1000 : 2000,
+    style: toastStyle[status].toast,
+    textStyle: toastStyle[status].text,
+  });
+};
+
+export { Adresses, GetData, ShowToast, GOOGLE_MAPS_APIKEY, ParseDate };
